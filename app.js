@@ -6,6 +6,7 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session=require("express-session");
 const passport=require("passport");
+const { MongoClient } = require('mongodb');
 const passportLocalMongoose=require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
@@ -28,9 +29,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.set( "strictQuery", false );
-mongoose.connect( "mongodb://0.0.0.0:27017/userDB", () => {
-    console.log(`Connected to MongoDB`) 
-});
+const uri = 'mongodb://mongodb:27017/';
+const client = new MongoClient(uri, { useUnifiedTopology: true });
+
+async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+  }
+}
+
+// Call the function to establish the connection
+connectToDatabase();
 
 
 const userSchema =new mongoose.Schema( {

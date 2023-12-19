@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.DS_Store
+*.log
+*.bak
+*.swp
+*.swo
+*.log.*
+*.pid
+*.yml
+*.lock
+.env
